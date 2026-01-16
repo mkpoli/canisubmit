@@ -269,7 +269,11 @@ function getLanguageName(code: string, locale: string = getLocale()) {
     </table>
   </div>
 
-  <footer class="mt-20 border-t border-gray-100 pt-16 pb-12">
+  <div class="mt-8 p-4 bg-gray-50 rounded-md text-sm text-gray-600 border border-gray-100">
+    <p>{m.disclaimer_text()}</p>
+  </div>
+
+  <footer class="mt-12 border-t border-gray-100 pt-12 pb-12">
     <div class="flex flex-col items-center gap-6">
       <a
         href="https://github.com/mkpoli/canisubmit"

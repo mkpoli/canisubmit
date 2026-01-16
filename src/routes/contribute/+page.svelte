@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { page } from '$app/state';
   import * as m from '$lib/paraglide/messages';
 
   let { data } = $props();
