@@ -57,3 +57,8 @@ To push schema changes to the production database:
     ```bash
     bun run db:prod:push
     ```
+
+## License
+
+*   **Software**: [MIT License](LICENSE) © 2026 mkpoli
+*   **Data**: [CC0 1.0 Universal](LICENSE-DATA) (Public Domain)

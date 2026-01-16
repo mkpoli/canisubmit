@@ -31,5 +31,10 @@
 	"button_save": "Save",
 	"button_cancel": "Cancel",
 	"button_add_venue": "Add Venue",
-	"error_name_required": "Name is required"
+	"error_name_required": "Name is required",
+	"footer_source_code": "Source Code",
+	"footer_license_software": "Software",
+	"footer_license_data": "Data",
+	"license_mit": "MIT License",
+	"license_cc0": "CC0 1.0 Universal"
 }
