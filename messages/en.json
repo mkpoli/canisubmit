@@ -36,5 +36,6 @@
 	"footer_license_software": "Software",
 	"footer_license_data": "Data",
 	"license_mit": "MIT License",
-	"license_cc0": "CC0 1.0 Universal"
+	"license_cc0": "CC0 1.0 Universal",
+	"notice_public_domain": "By submitting, you agree that your contribution will be released into the public domain (CC0). Please ensure the information is accurate. Vandalism is strictly prohibited."
 }
