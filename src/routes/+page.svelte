@@ -1,5 +1,5 @@
 <script lang="ts">
-import { page } from "$app/state";
+import { goto } from "$app/navigation";
 import * as m from "$lib/paraglide/messages";
 import {
 	getLocale,
@@ -276,9 +276,17 @@ function getLanguageName(code: string, locale: string = getLocale()) {
               {@const policy = getPolicy(venue, tool.id)}
               <td class="px-6 py-4 text-center">
                 {#if policy}
-                  <a
-                    href="/contribute/policy?venueId={venue.id}&toolId={tool.id}"
-                    class="inline-flex hover:opacity-80 transition-opacity"
+                  <div
+                    role="button"
+                    tabindex="0"
+                    onclick={() => goto(`/contribute/policy?venueId=${venue.id}&toolId=${tool.id}`)}
+                    onkeydown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        goto(`/contribute/policy?venueId=${venue.id}&toolId=${tool.id}`);
+                        e.preventDefault();
+                      }
+                    }}
+                    class="inline-flex hover:opacity-80 transition-opacity cursor-pointer"
                     title={m.form_title_policy()}
                   >
                     <div class="inline-flex flex-col items-center gap-1">
@@ -301,12 +309,35 @@ function getLanguageName(code: string, locale: string = getLocale()) {
                         </a>
                       {/if}
                       {#if policy.notes}
-                        <div class="text-xs text-gray-500 mt-1 max-w-48 truncate" title={policy.notes}>
-                          {policy.notes}
+                        <div class="relative group mt-1" role="tooltip" onclick={(e) => e.stopPropagation()}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                            class="size-4 text-gray-400 hover:text-gray-600 cursor-help"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.286 3.423.379.35.028.71.042 1.065.057.54.021 1.057.042 1.58.079.52.037.962.24 1.344.593.383.354.76.8 1.155 1.258a.936.936 0 0 0 1.545-.098c.36-.61.7-1.156 1.05-1.583.33-.403.73-.67 1.18-.853a.985.985 0 0 1 .49-.101c1.077-.101 2.126-.251 3.125-.453A3.682 3.682 0 0 0 22.5 12.75V4.5a2.25 2.25 0 0 0-2.25-2.25H3.75A2.25 2.25 0 0 0 1.5 4.5v9.75Z"
+                            />
+                          </svg>
+                          <div
+                            class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 bg-gray-800 text-white text-xs rounded shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10 pointer-events-none"
+                          >
+                            {policy.notes}
+                            <div
+                              class="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-gray-800"
+                            ></div>
+                          </div>
                         </div>
+                      {:else}
+                        <div class="mt-1 size-4"></div>
                       {/if}
                     </div>
-                  </a>
+                  </div>
                 {:else}
                   <a
                     href="/contribute/policy?venueId={venue.id}&toolId={tool.id}"
