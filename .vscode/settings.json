@@ -1,5 +1,8 @@
 {
 	"files.associations": {
 		"*.css": "tailwindcss"
+	},
+	"[javascript][typescript][svelte]": {
+		"editor.defaultFormatter": "biomejs.biome"
 	}
 }
