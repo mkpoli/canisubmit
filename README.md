@@ -1,38 +1,59 @@
-# sv
+# Academic Formatting Compatibility Database
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+A structured registry of academic submission format policies. This application helps researchers determine which typesetting tools (LaTeX, Word, Typst, etc.) are supported, tolerated, or discouraged by various academic venues (conferences, journals, societies).
 
-## Creating a project
+## Features
 
-If you're seeing this, you've probably already done this step. Congrats!
+*   **Compatibility Matrix**: View venues and their policy status for different tools.
+*   **Localization**: Full English and Japanese support (UI and content).
+*   **Contribution**: Open contribution flow for adding/editing venues.
+*   **Filtering**: Filter venues by language.
 
-```sh
-# create a new project in the current directory
-npx sv create
+## Tech Stack
 
-# create a new project in my-app
-npx sv create my-app
+*   **Framework**: SvelteKit
+*   **Database**: Drizzle ORM + LibSQL (Turso for production, SQLite for dev)
+*   **Localization**: Paraglide.js
+*   **Deployment**: Cloudflare Pages / Workers
+
+## Setup
+
+1.  **Install Dependencies**:
+    ```bash
+    bun install
+    ```
+
+2.  **Environment Variables**:
+    Create a `.env` file for local development:
+    ```env
+    DATABASE_URL="file:local.db"
+    ```
+
+3.  **Run Development Server**:
+    ```bash
+    bun dev
+    ```
+    The application will automatically migrate and seed the local database on startup.
+
+## Database
+
+### Development
+The development environment uses a local SQLite file (`local.db`). It is automatically seeded with sample data when you run `bun dev`.
+To reset the local database:
+```bash
+rm local.db && bun dev
 ```
 
-## Developing
+### Production (Turso)
+To push schema changes to the production database:
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+1.  Create `.env.production` with your credentials:
+    ```env
+    DATABASE_URL="libsql://<YOUR-DB>.turso.io"
+    DATABASE_AUTH_TOKEN="<YOUR-TOKEN>"
+    ```
 
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+2.  Run the push command:
+    ```bash
+    bun run db:prod:push
+    ```
