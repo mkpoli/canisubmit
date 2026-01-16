@@ -42,6 +42,28 @@ function getStatusColor(status: string | null) {
 	}
 }
 
+function getStatusDescription(status: string | null) {
+	if (!status) return "";
+	switch (status) {
+		case "official":
+			return m.status_desc_official();
+		case "endorsed":
+			return m.status_desc_endorsed();
+		case "community":
+			return m.status_desc_community();
+		case "tolerated":
+			return m.status_desc_tolerated();
+		case "discouraged":
+			return m.status_desc_discouraged();
+		case "disallowed":
+			return m.status_desc_disallowed();
+		case "unclear":
+			return m.status_desc_unclear();
+		default:
+			return "";
+	}
+}
+
 function getStatusLabel(status: string | null) {
 	if (!status) return "-";
 	// Map status to localized message
@@ -264,6 +286,7 @@ function getLanguageName(code: string, locale: string = getLocale()) {
                         class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {getStatusColor(
                           policy.status,
                         )}"
+                        title={getStatusDescription(policy.status)}
                       >
                         {getStatusLabel(policy.status)}
                       </span>
@@ -276,6 +299,11 @@ function getLanguageName(code: string, locale: string = getLocale()) {
                         >
                           {m.source_link()}
                         </a>
+                      {/if}
+                      {#if policy.notes}
+                        <div class="text-xs text-gray-500 mt-1 max-w-48 truncate" title={policy.notes}>
+                          {policy.notes}
+                        </div>
                       {/if}
                     </div>
                   </a>
