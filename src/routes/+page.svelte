@@ -27,14 +27,18 @@ function getStatusColor(status: string | null) {
 	switch (status) {
 		case "official":
 			return "bg-green-100 text-green-800";
+		case "endorsed":
+			return "bg-teal-100 text-teal-800";
 		case "community":
-			return "bg-yellow-100 text-yellow-800";
-		case "tolerated":
 			return "bg-blue-100 text-blue-800";
+		case "tolerated":
+			return "bg-gray-100 text-gray-800";
 		case "discouraged":
+			return "bg-orange-100 text-orange-800";
+		case "disallowed":
 			return "bg-red-100 text-red-800";
 		default:
-			return "bg-gray-100 text-gray-800";
+			return "bg-gray-50 text-gray-400";
 	}
 }
 
@@ -44,12 +48,18 @@ function getStatusLabel(status: string | null) {
 	switch (status) {
 		case "official":
 			return m.status_official();
+		case "endorsed":
+			return m.status_endorsed();
 		case "community":
 			return m.status_community();
 		case "tolerated":
 			return m.status_tolerated();
 		case "discouraged":
 			return m.status_discouraged();
+		case "disallowed":
+			return m.status_disallowed();
+		case "unclear":
+			return m.status_unclear();
 		default:
 			return status.charAt(0).toUpperCase() + status.slice(1);
 	}
@@ -244,22 +254,49 @@ function getLanguageName(code: string, locale: string = getLocale()) {
               {@const policy = getPolicy(venue, tool.id)}
               <td class="px-6 py-4 text-center">
                 {#if policy}
-                  <div class="inline-flex flex-col items-center gap-1">
-                    <span
-                      class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {getStatusColor(
-                        policy.status,
-                      )}"
-                    >
-                      {getStatusLabel(policy.status)}
-                    </span>
-                    {#if policy.primaryLink}
-                      <a href={policy.primaryLink} target="_blank" class="text-xs text-blue-600 hover:underline">
-                        {m.source_link()}
-                      </a>
-                    {/if}
-                  </div>
+                  <a
+                    href="/contribute/policy?venueId={venue.id}&toolId={tool.id}"
+                    class="inline-flex hover:opacity-80 transition-opacity"
+                    title={m.form_title_policy()}
+                  >
+                    <div class="inline-flex flex-col items-center gap-1">
+                      <span
+                        class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium {getStatusColor(
+                          policy.status,
+                        )}"
+                      >
+                        {getStatusLabel(policy.status)}
+                      </span>
+                      {#if policy.primaryLink}
+                        <a
+                          href={policy.primaryLink}
+                          target="_blank"
+                          class="text-xs text-blue-600 hover:underline"
+                          onclick={(e) => e.stopPropagation()}
+                        >
+                          {m.source_link()}
+                        </a>
+                      {/if}
+                    </div>
+                  </a>
                 {:else}
-                  <span class="text-gray-300">-</span>
+                  <a
+                    href="/contribute/policy?venueId={venue.id}&toolId={tool.id}"
+                    class="block w-full h-full min-h-[2rem] flex items-center justify-center text-gray-300 hover:text-gray-400 group"
+                    title={m.form_title_policy()}
+                  >
+                    <span class="group-hover:hidden">-</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="1.5"
+                      stroke="currentColor"
+                      class="size-4 hidden group-hover:block"
+                    >
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                    </svg>
+                  </a>
                 {/if}
               </td>
             {/each}

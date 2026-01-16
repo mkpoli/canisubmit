@@ -1,8 +1,8 @@
 <script lang="ts">
-  import * as m from '$lib/paraglide/messages';
+import * as m from "$lib/paraglide/messages";
 
-  let { data } = $props();
-  let venue = $derived(data.venue);
+let { data } = $props();
+let venue = $derived(data.venue);
 </script>
 
 <div class="container mx-auto p-8 max-w-2xl">
