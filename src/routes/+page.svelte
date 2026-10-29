@@ -131,13 +131,13 @@ function getLanguageName(code: string, locale: string = getLocale()) {
 </svelte:head>
 
 <div class="container mx-auto p-8">
-  <header class="mb-8 flex justify-between items-end">
+  <header class="mb-8 flex flex-col items-start gap-4 sm:flex-row sm:justify-between sm:items-end">
     <div>
       <h1 class="text-3xl font-bold mb-2">{m.page_title()}</h1>
       <p class="text-gray-600">{m.page_subtitle()}</p>
     </div>
 
-    <div class="flex flex-col items-end gap-2">
+    <div class="flex flex-col items-start sm:items-end gap-2">
       <div class="flex gap-2 text-sm">
         {#each locales as locale}
           <button
@@ -149,7 +149,7 @@ function getLanguageName(code: string, locale: string = getLocale()) {
         {/each}
       </div>
 
-      <div class="flex items-center gap-4">
+      <div class="flex flex-wrap items-center gap-4">
         <a
           href="/contribute"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
