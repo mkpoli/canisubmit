@@ -58,6 +58,12 @@ To push schema changes to the production database:
     bun run db:prod:push
     ```
 
+## Sponsor
+
+I make this database alone, for researchers who choose how to typeset their papers. I don't have a job, and my small TA pay doesn't cover rent and food. Even one dollar on [Ko-fi](https://ko-fi.com/mkpoli) helps me eat today. Companies interested in sponsoring can write to mkpoli@mkpo.li.
+
+[![Support me on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/mkpoli)
+
 ## License
 
 *   **Software**: [MIT License](LICENSE) © 2026 mkpoli
