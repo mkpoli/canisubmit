@@ -7,6 +7,7 @@ import {
 	localizeHref,
 	setLocale,
 } from "$lib/paraglide/runtime";
+import SponsorButton from "$lib/SponsorButton.svelte";
 import type { PageData } from "./$types";
 
 let { data }: { data: PageData } = $props();
@@ -150,6 +151,7 @@ function getLanguageName(code: string, locale: string = getLocale()) {
       </div>
 
       <div class="flex flex-wrap items-center gap-4">
+        <SponsorButton />
         <a
           href="/contribute"
           class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
