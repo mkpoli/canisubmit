@@ -2,7 +2,7 @@
 import * as m from "$lib/paraglide/messages";
 
 // The header's Sponsor pill, led by the author's face, and the dialog it opens: her portrait,
-// why she needs help, then three steps that end at the Ko-fi button.
+// what a tip pays for, then three steps that end at the Ko-fi button.
 let dialog = $state<HTMLDialogElement>();
 
 // A click on the backdrop closes the dialog; one on its own scrollbar also targets the dialog,
