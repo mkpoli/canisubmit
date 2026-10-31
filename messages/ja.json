@@ -52,5 +52,17 @@
 	"license_mit": "MITライセンス",
 	"license_cc0": "CC0 1.0 Universal",
 	"notice_public_domain": "送信することで、あなたの投稿がパブリックドメイン (CC0) として公開されることに同意したものとみなされます。正確な情報を提供してください。荒らし行為は厳禁です。",
-	"disclaimer_text": "免責事項: このデータはコミュニティによって収集されたものであり、正確性は保証されません。投稿前に必ず公式ガイドラインをご確認ください。"
+	"disclaimer_text": "免責事項: このデータはコミュニティによって収集されたものであり、正確性は保証されません。投稿前に必ず公式ガイドラインをご確認ください。",
+	"sponsor_label": "スポンサー",
+	"sponsor_lead": "canisubmitは資金提供を受けず、個人で開発・運営しています。誰でも無料で利用でき、これからもずっと無料のまま続けていきたいと思っています。",
+	"sponsor_ask": "もしcanisubmitがお役に立っていたら、Ko-fiでチップをいただけると、改善を続けていく時間を作ることができます。",
+	"sponsor_how_to": "チップの送り方",
+	"sponsor_step_1": "下のKo-fiをタップ。",
+	"sponsor_step_2": "お好きな金額を指定。",
+	"sponsor_step_3": "PayPalまたはカードでお支払い。アカウント登録は不要です。",
+	"sponsor_kofi": "1回限りまたは毎月",
+	"sponsor_company": "企業スポンサー",
+	"sponsor_company_hint": "企業様からのスポンサーも受け付けています。mkpoli@mkpo.liまでご連絡ください。",
+	"sponsor_thanks": "canisubmitをご利用いただきありがとうございます💗",
+	"sponsor_close": "閉じる"
 }
