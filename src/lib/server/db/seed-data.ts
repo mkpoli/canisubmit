@@ -949,4 +949,207 @@ export const VENUES: SeedVenue[] = [
 			},
 		],
 	},
+	{
+		name: "JSASS",
+		type: "journal",
+		website: "https://www.jsass.or.jp/",
+		language: "ja",
+		area: "engineering",
+		guidelinesUrl: "https://www.jsass.or.jp/publications/127/",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink:
+					"https://www.jsass.or.jp/wp-content/uploads/2018/10/jsample20230131.docx",
+			},
+			{
+				tool: "LaTeX",
+				status: "official",
+				primaryLink:
+					"https://www.jsass.or.jp/wp-content/uploads/2025/10/JSASS_JPN_template_2025_10_15.zip",
+				notes:
+					"Template is provided for reference; correct operation is not guaranteed.",
+			},
+		],
+	},
+	{
+		name: "AESJ",
+		type: "journal",
+		website: "https://www.aesj.net/",
+		language: "ja",
+		area: "engineering",
+		guidelinesUrl: "https://www.aesj.net/publish/jnst_jp/post_jp",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink: "https://www.aesj.net/permalink/jnst-jp-template/",
+			},
+			{
+				tool: "LaTeX",
+				status: "tolerated",
+				primaryLink: "https://www.aesj.net/publish/jnst_jp/post_jp",
+				notes: "No style file; LaTeX files are converted to PDF on submission.",
+			},
+		],
+	},
+	{
+		name: "JIM",
+		type: "journal",
+		website: "https://jimm.jp/",
+		language: "ja",
+		area: "engineering",
+		guidelinesUrl: "https://jimm.jp/publication/journal/post.html",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink:
+					"https://jimm.jp/publication/journal/pdf/Manuscript_Prep_20241128.docx",
+			},
+			{
+				tool: "LaTeX",
+				status: "tolerated",
+				primaryLink:
+					"https://jimm.jp/publication/journal/pdf/JIMM_guidepost.pdf",
+				notes: "No style file; LaTeX files are listed as print files.",
+			},
+		],
+	},
+	{
+		name: "JSMS",
+		type: "journal",
+		website: "https://www.jsms.jp/",
+		language: "ja",
+		area: "engineering",
+		guidelinesUrl: "https://www.jsms.jp/kaishi/kaishi_head.htm",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink: "https://www.jsms.jp/kaishi/file/Japanese_Sample_new.docx",
+			},
+			{
+				tool: "LaTeX",
+				status: "official",
+				primaryLink: "https://www.jsms.jp/kaishi/file/jsms-sample-2024v1-3.zip",
+			},
+		],
+	},
+	{
+		name: "GSJ",
+		type: "journal",
+		website: "https://geosociety.jp/",
+		language: "ja",
+		area: "science",
+		guidelinesUrl: "https://geosociety.jp/members/postguide/",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink:
+					"https://old2.geosociety.jp/uploads/fckeditor//publication/kiyaku/template.docx",
+			},
+		],
+	},
+	{
+		name: "JORSJ",
+		type: "journal",
+		website: "https://orsj.org/",
+		language: "en",
+		area: "engineering",
+		guidelinesUrl: "https://orsj.org/jorsj-torsj",
+		policies: [
+			{
+				tool: "LaTeX",
+				status: "official",
+				primaryLink: "https://orsj.org/jorsj-torsj",
+				notes:
+					"LaTeX with the society style files is required for the final manuscript.",
+			},
+		],
+	},
+	{
+		name: "TORSJ",
+		type: "journal",
+		website: "https://orsj.org/",
+		language: "ja",
+		area: "engineering",
+		guidelinesUrl: "https://orsj.org/jorsj-torsj",
+		policies: [
+			{
+				tool: "LaTeX",
+				status: "official",
+				primaryLink: "https://orsj.org/jorsj-torsj",
+				notes:
+					"LaTeX with the society style files is required for the final manuscript.",
+			},
+		],
+	},
+	{
+		name: "PSJ",
+		type: "journal",
+		website: "https://www.pharm.or.jp/",
+		language: "ja",
+		area: "science",
+		guidelinesUrl: "https://yakushi.pharm.or.jp/j_regulations.pdf",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink: "https://yakushi.pharm.or.jp/j_regulations.pdf",
+				notes:
+					"Word is required for the final manuscript text; no template is published.",
+			},
+		],
+	},
+	{
+		name: "JSAC",
+		type: "journal",
+		website: "https://www.jsac.or.jp/",
+		language: "ja",
+		area: "science",
+		guidelinesUrl: "https://www.jsac.jp/~wabnsk/kitei.html",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink: "https://www.jsac.jp/~wabnsk/toko.html",
+				notes: "The Word template is required for submissions.",
+			},
+		],
+	},
+	{
+		name: "SSJ",
+		type: "journal",
+		website: "https://zisin.jp/",
+		language: "ja",
+		area: "science",
+		guidelinesUrl: "https://zisin.jp/org/organization_submission01.html",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink: "https://zisin.jp/org/word/hinagata2021.doc",
+			},
+		],
+	},
+	{
+		name: "JOS",
+		type: "journal",
+		website: "https://kaiyo-gakkai.jp/",
+		language: "ja",
+		area: "science",
+		guidelinesUrl: "https://kaiyo-gakkai.jp/jos/publications/uminokenkyu",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink:
+					"https://kaiyo-gakkai.jp/jos/wp-content/uploads/2023/09/Kitei202309.pdf",
+				notes: "Microsoft Word is prescribed; no template file is published.",
+			},
+		],
+	},
 ];
