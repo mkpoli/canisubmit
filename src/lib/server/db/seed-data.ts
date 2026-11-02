@@ -766,4 +766,187 @@ export const VENUES: SeedVenue[] = [
 			},
 		],
 	},
+	{
+		name: "JSCE",
+		type: "journal",
+		website: "https://www.jsce.or.jp/",
+		language: "ja",
+		area: "engineering",
+		guidelinesUrl: "https://committees.jsce.or.jp/jjsce/notes",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink:
+					"https://committees.jsce.or.jp/jjsce/system/files/sample_wabun_20220101_3_1.docx",
+			},
+			{
+				tool: "LaTeX",
+				status: "tolerated",
+				primaryLink: "https://committees.jsce.or.jp/jjsce/notes",
+				notes:
+					"No LaTeX template; a generic clause accepts OS/software layout differences and asks authors to note software-forced deviations.",
+			},
+		],
+	},
+	{
+		name: "AIJ",
+		type: "journal",
+		website: "https://www.aij.or.jp/",
+		language: "ja",
+		area: "engineering",
+		guidelinesUrl:
+			"https://www.aij.or.jp/jpn/transaction/ronbun/Rinstructions.pdf",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink:
+					"https://www.aij.or.jp/jpn/transaction/ronbun/template_Japanese.docx",
+			},
+		],
+	},
+	{
+		name: "ASJ",
+		type: "journal",
+		website: "https://acoustics.jp/",
+		language: "ja",
+		area: "engineering",
+		guidelinesUrl: "https://acoustics.jp/journal/kitei_update/",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink:
+					"https://acoustics.jp/cms/wp_asj/wp-content/uploads/WabunFrm_20260115update2.docx",
+			},
+			{
+				tool: "LaTeX",
+				status: "official",
+				primaryLink: "https://acoustics.jp/journal/kitei/latex2e-style-file/",
+				notes: "Source files are submitted with the final version only.",
+			},
+		],
+	},
+	{
+		name: "RSJ",
+		type: "journal",
+		website: "https://www.rsj.or.jp/",
+		language: "ja",
+		area: "engineering",
+		guidelinesUrl: "https://www.rsj.or.jp/pub/jrsj/info/toukou.html",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink:
+					"https://www.rsj.or.jp/content/files/pub/jrsj/stylefile/JRSJ-word/JRSJ_Template.doc",
+				notes: "Word submissions have a higher page charge.",
+			},
+			{
+				tool: "LaTeX",
+				status: "official",
+				primaryLink: "https://www.rsj.or.jp/pub/jrsj/info/stylefile.html",
+			},
+			{
+				tool: "Typst",
+				status: "disallowed",
+				primaryLink: "https://www.rsj.or.jp/content/files/data_rules/F-02.pdf",
+				notes: "Only LaTeX or plain text (including Word) is accepted.",
+			},
+		],
+	},
+	{
+		name: "ANLP",
+		type: "journal",
+		website: "https://www.anlp.jp/",
+		language: "ja",
+		area: "cs",
+		guidelinesUrl: "https://anlp.jp/guide/guideline-new.html",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink: "https://www.anlp.jp/guide/jnlp-template.doc",
+			},
+			{
+				tool: "LaTeX",
+				status: "official",
+				primaryLink: "https://www.anlp.jp/guide/jnlp-stylefiles.zip",
+			},
+		],
+	},
+	{
+		name: "JPS",
+		type: "society",
+		website: "https://www.jps.or.jp/",
+		language: "ja",
+		area: "science",
+		guidelinesUrl: "https://www.jps.or.jp/books/shippitsu_style.php",
+		policies: [
+			{
+				tool: "LaTeX",
+				status: "official",
+				primaryLink: "https://www.jps.or.jp/books/shippitsu_style.php",
+				notes: "Style files for 日本物理学会誌 (the society magazine).",
+			},
+		],
+	},
+	{
+		name: "JPA",
+		type: "journal",
+		website: "https://psych.or.jp/",
+		language: "ja",
+		area: "science",
+		guidelinesUrl: "https://psych.or.jp/manual/",
+		policies: [
+			{
+				tool: "Word",
+				status: "official",
+				primaryLink:
+					"https://psych.or.jp/wp-content/uploads/2022/10/JJP_template.docx",
+			},
+		],
+	},
+	{
+		name: "MSJ",
+		type: "journal",
+		website: "https://www.mathsoc.jp/",
+		language: "ja",
+		area: "science",
+		guidelinesUrl:
+			"https://www.mathsoc.jp/assets/pdf/publications/sugaku/sugaku-kitei.pdf",
+		policies: [
+			{
+				tool: "LaTeX",
+				status: "official",
+				primaryLink: "https://www.mathsoc.jp/publications/sugaku/sty/",
+				notes: "Style files for the journal 数学.",
+			},
+			{
+				tool: "Word",
+				status: "tolerated",
+				primaryLink:
+					"https://www.mathsoc.jp/assets/pdf/publications/sugaku/sugaku-kitei.pdf",
+				notes:
+					"Non-TeX word processors are allowed at 44 characters by 38 lines.",
+			},
+		],
+	},
+	{
+		name: "JMSJ",
+		type: "journal",
+		website: "https://www.mathsoc.jp/",
+		language: "en",
+		area: "science",
+		guidelinesUrl: "https://www.mathsoc.jp/publication/JMSJ/submission.html",
+		policies: [
+			{
+				tool: "LaTeX",
+				status: "official",
+				primaryLink:
+					"https://www.mathsoc.jp/publication/JMSJ/jmsj-classfile.zip",
+			},
+		],
+	},
 ];
