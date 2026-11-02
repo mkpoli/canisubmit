@@ -38,7 +38,7 @@ export const policies = sqliteTable(
 		toolId: text("tool_id")
 			.notNull()
 			.references(() => tools.id),
-		// 'official', 'community', 'tolerated', 'none', 'discouraged'
+		// 'official', 'endorsed', 'community', 'tolerated', 'discouraged', 'disallowed', 'unclear'
 		status: text("status"),
 		primaryLink: text("primary_link"),
 		notes: text("notes"),

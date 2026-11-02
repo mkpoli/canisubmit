@@ -2,130 +2,76 @@ import { eq } from "drizzle-orm";
 import type { LibSQLDatabase } from "drizzle-orm/libsql";
 import type * as schema from "./schema";
 import { policies, tools, venues } from "./schema";
+import { LAST_CHECKED_AT, TOOLS, VENUES } from "./seed-data";
 
-export async function seed(db: LibSQLDatabase<typeof schema>) {
+type Database = LibSQLDatabase<typeof schema>;
+
+export async function seed(db: Database) {
 	console.log("Seeding...");
 
-	// Tools
-	const toolList = [
-		{ name: "Word", website: "https://www.microsoft.com/word" },
-		{ name: "LaTeX", website: "https://www.latex-project.org/" },
-		{ name: "Typst", website: "https://typst.app/" },
-	];
+	const toolIds = new Map<string, string>();
 
-	const insertedTools = [];
-	for (const t of toolList) {
-		let [existing] = await db
+	for (const tool of TOOLS) {
+		const [existing] = await db
 			.select()
 			.from(tools)
-			.where(eq(tools.name, t.name));
-		if (!existing) {
-			[existing] = await db.insert(tools).values(t).returning();
+			.where(eq(tools.name, tool.name));
+
+		if (existing) {
+			toolIds.set(tool.name, existing.id);
+			continue;
 		}
-		insertedTools.push(existing);
+
+		const [inserted] = await db
+			.insert(tools)
+			.values(tool)
+			.returning({ id: tools.id });
+		toolIds.set(tool.name, inserted.id);
 	}
 
-	// Venues
-	const venueList = [
-		{
-			name: "IEEE Conferences",
-			type: "conference",
-			website: "https://www.ieee.org/conferences/",
-			language: "en",
-			area: "engineering",
-			guidelinesUrl:
-				"https://journals.ieeeauthorcenter.ieee.org/create-your-ieee-journal-article/",
-		},
-		{
-			name: "ACM Proceedings",
-			type: "conference",
-			website: "https://www.acm.org/publications/proceedings",
-			language: "en",
-			area: "cs",
-			guidelinesUrl:
-				"https://www.acm.org/publications/taps/word-template-workflow",
-		},
-		{
-			name: "Nature",
-			type: "journal",
-			website: "https://www.nature.com/",
-			language: "en",
-			area: "science",
-			guidelinesUrl:
-				"https://www.nature.com/nature/for-authors/formatting-guide",
-		},
-		{
-			name: "NeurIPS",
-			type: "conference",
-			website: "https://neurips.cc/",
-			language: "en",
-			area: "cs",
-			guidelinesUrl:
-				"https://neurips.cc/Conferences/2023/PaperInformation/StyleFiles",
-		},
-		{
-			name: "Information Processing Society of Japan (IPSJ)",
-			type: "society",
-			website: "https://www.ipsj.or.jp/",
-			language: "ja",
-			area: "cs",
-			guidelinesUrl: "https://www.ipsj.or.jp/english/jip/submit/style.html",
-		},
-		{
-			name: "The Institute of Electronics, Information and Communication Engineers (IEICE)",
-			type: "society",
-			website: "https://www.ieice.org/",
-			language: "ja",
-			area: "engineering",
-			guidelinesUrl: "https://www.ieice.org/eng/shiori/mokuji_iss.html",
-		},
-	];
-
-	const insertedVenues = [];
-	for (const v of venueList) {
-		let [existing] = await db
+	for (const venue of VENUES) {
+		const [existing] = await db
 			.select()
 			.from(venues)
-			.where(eq(venues.name, v.name));
-		if (!existing) {
-			[existing] = await db.insert(venues).values(v).returning();
+			.where(eq(venues.name, venue.name));
+
+		let venueId: string;
+
+		if (existing) {
+			venueId = existing.id;
+		} else {
+			const [inserted] = await db
+				.insert(venues)
+				.values({
+					name: venue.name,
+					type: venue.type,
+					website: venue.website,
+					language: venue.language,
+					area: venue.area,
+					guidelinesUrl: venue.guidelinesUrl,
+					updatedAt: LAST_CHECKED_AT,
+				})
+				.returning({ id: venues.id });
+			venueId = inserted.id;
 		}
-		insertedVenues.push(existing);
+
+		for (const policy of venue.policies) {
+			const toolId = toolIds.get(policy.tool);
+			if (!toolId) throw new Error(`Unknown tool: ${policy.tool}`);
+
+			await db
+				.insert(policies)
+				.values({
+					venueId,
+					toolId,
+					status: policy.status,
+					primaryLink: policy.primaryLink ?? null,
+					notes: policy.notes ?? null,
+					lastCheckedAt: LAST_CHECKED_AT,
+				})
+				.onConflictDoNothing();
+		}
 	}
 
-	// Policies (Sample)
-	// IEEE - LaTeX (Official), Word (Official), Typst (Community)
-	const ieee = insertedVenues.find((v) => v.name === "IEEE Conferences")!;
-	const latex = insertedTools.find((t) => t.name === "LaTeX")!;
-	const word = insertedTools.find((t) => t.name === "Word")!;
-	const typst = insertedTools.find((t) => t.name === "Typst")!;
-
-	await db
-		.insert(policies)
-		.values([
-			{
-				venueId: ieee.id,
-				toolId: latex.id,
-				status: "official",
-				primaryLink:
-					"https://www.ieee.org/conferences/publishing/templates.html",
-			},
-			{
-				venueId: ieee.id,
-				toolId: word.id,
-				status: "official",
-				primaryLink:
-					"https://www.ieee.org/conferences/publishing/templates.html",
-			},
-			{
-				venueId: ieee.id,
-				toolId: typst.id,
-				status: "community",
-				primaryLink: "https://github.com/mitex-rs/mitex",
-				notes: "Unofficial templates exist in Typst Universe.",
-			},
-		])
-		.onConflictDoNothing();
-
-	console.log("Seeding complete.");
+	console.log(`Seeding complete: ${VENUES.length} venues.`);
 }
