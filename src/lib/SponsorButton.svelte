@@ -55,9 +55,7 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 			</ol>
 		</section>
 		<a class="kofi" href="https://ko-fi.com/mkpoli" target="_blank" rel="noreferrer noopener">
-			<span class="mark" aria-hidden="true">
-				<svg viewBox="0 0 24 24" width="20" height="20"><path d="M4 8h12v6a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8Zm12 1.5h1.5a2.5 2.5 0 0 1 0 5H16M7 3.5v2M10 3.5v2M13 3.5v2M4 21h12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
-			</span>
+			<img class="mark" src="/brand/kofi-symbol.svg" alt="" width="34" height="27" />
 			<span class="copy"><strong>Ko-fi</strong><small>{m.sponsor_kofi()}</small></span>
 			<svg class="arrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
 		</a>
@@ -355,21 +353,19 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 		padding-block: 12px;
 		padding-inline: 12px 18px;
 		border-radius: 999px;
-		background: linear-gradient(135deg, #d81b60, #b0124f);
+		border: 1px solid #202020;
+		background: #202020;
 		color: #fff;
 		text-decoration: none;
-		box-shadow: 0 6px 16px rgb(216 27 96 / 0.32);
+		box-shadow: 0 6px 16px rgb(32 32 32 / 0.28);
 	}
 
 	.mark {
-		display: grid;
+		display: block;
 		flex: none;
-		place-items: center;
 		width: 38px;
-		height: 38px;
-		border-radius: 50%;
-		background: rgb(255 255 255 / 0.22);
-		font-size: 20px;
+		height: 30px;
+		object-fit: contain;
 	}
 
 	.arrow {
@@ -480,7 +476,7 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 
 		.kofi:hover {
 			transform: translateY(-1px);
-			box-shadow: 0 8px 22px rgb(216 27 96 / 0.42);
+			box-shadow: 0 8px 22px rgb(32 32 32 / 0.38);
 		}
 	}
 
