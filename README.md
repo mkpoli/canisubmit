@@ -58,6 +58,12 @@ To push schema changes to the production database:
     bun run db:prod:push
     ```
 
+## Sponsor
+
+I build this database on my own, with no funding behind it, and it's free for everyone. If it's useful to you, a tip on [Ko-fi](https://ko-fi.com/mkpoli) or [OFUSE](https://ofuse.me/mkpoli) gives me time to keep improving it. Companies interested in sponsoring can write to mkpoli@mkpo.li.
+
+[![Support me on Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/mkpoli)
+
 ## License
 
 *   **Software**: [MIT License](LICENSE) © 2026 mkpoli
