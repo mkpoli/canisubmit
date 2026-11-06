@@ -1,4 +1,5 @@
 <script lang="ts">
+import { tick } from "svelte";
 import * as m from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
 
@@ -11,8 +12,9 @@ let open = $state(false);
 let rollLoaded = false;
 let pressedOutside = false;
 
-function show() {
+async function show() {
 	open = true;
+	await tick();
 	dialog?.showModal();
 	if (rollLoaded) return;
 	rollLoaded = true;
