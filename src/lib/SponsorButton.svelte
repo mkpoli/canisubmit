@@ -3,17 +3,32 @@ import * as m from "$lib/paraglide/messages";
 import { getLocale } from "$lib/paraglide/runtime";
 
 // The header's Sponsor pill, led by the author's face, and the dialog it opens: her portrait,
-// what a tip pays for, then three steps that end at the Ko-fi button.
+// what a tip pays for, then three steps that end at the Ko-fi and OFUSE buttons and the roll of
+// recent supporters. The contents render, and the roll's script loads, when the dialog first
+// opens, so a page view asks the supporters service for nothing.
 let dialog = $state<HTMLDialogElement>();
+let open = $state(false);
+let rollLoaded = false;
+let pressedOutside = false;
 
-// A click on the backdrop closes the dialog; one on its own scrollbar also targets the dialog,
-// so only a click outside its box counts.
+function show() {
+	open = true;
+	dialog?.showModal();
+	if (rollLoaded) return;
+	rollLoaded = true;
+	const script = document.createElement("script");
+	script.type = "module";
+	script.src = "https://supporters.mkpo.li/roll.js";
+	document.head.appendChild(script);
+}
+
+// Whether a press lands on the backdrop. A drag that leaves the box, or the box's own scrollbar,
+// also targets the dialog, so the test is by position.
 function outside(event: MouseEvent) {
-	if (!dialog || event.target !== dialog) return;
+	if (!dialog || event.target !== dialog) return false;
 	const box = dialog.getBoundingClientRect();
 	const { clientX: x, clientY: y } = event;
-	if (x < box.left || x > box.right || y < box.top || y > box.bottom)
-		dialog.close();
+	return x < box.left || x > box.right || y < box.top || y > box.bottom;
 }
 
 const heart =
@@ -42,7 +57,7 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 	</a>
 {/snippet}
 
-<button type="button" class="sponsor" aria-label={m.sponsor_label()} aria-haspopup="dialog" onclick={() => dialog?.showModal()}>
+<button type="button" class="sponsor" aria-label={m.sponsor_label()} aria-haspopup="dialog" onclick={show}>
 	<span class="face" aria-hidden="true">
 		<img src="/sponsor-face.webp" alt="" width="26" height="26" decoding="async" />
 		<svg class="face-heart" viewBox="0 0 24 24"><path d={heart} /></svg>
@@ -50,7 +65,13 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 	<span class="label">{m.sponsor_label()}</span>
 </button>
 
-<dialog class="sponsor-dialog" bind:this={dialog} aria-labelledby="sponsor-title" onclick={outside}>
+<dialog class="sponsor-dialog" bind:this={dialog} aria-labelledby="sponsor-title"
+	onclose={() => (open = false)}
+	onpointerdown={(event) => (pressedOutside = outside(event))}
+	onclick={(event) => {
+		if (pressedOutside && outside(event)) dialog?.close();
+	}}>
+	{#if open}
 	<header>
 		<h2 id="sponsor-title">{m.sponsor_label()}</h2>
 		<button class="dismiss" type="button" aria-label={m.sponsor_close()} onclick={() => dialog?.close()}>
@@ -83,8 +104,10 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 			<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M3.5 6.5h17v11h-17zM3.5 7l8.5 6.5L20.5 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg>
 			<span class="copy"><strong>{m.sponsor_company()}</strong><small>{m.sponsor_company_hint()}</small></span>
 		</a>
+		<supporters-roll label={m.sponsor_supporters()} anonymous={m.sponsor_anonymous()}></supporters-roll>
 		<p class="thanks">{m.sponsor_thanks()}</p>
 	</div>
+	{/if}
 </dialog>
 
 <style>
@@ -459,6 +482,11 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 	.company .copy strong {
 		font-size: 0.85rem;
 		color: #111827;
+	}
+
+	supporters-roll {
+		--sp-text: #111827;
+		--sp-muted: #6b7280;
 	}
 
 	.thanks {

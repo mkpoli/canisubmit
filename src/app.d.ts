@@ -23,4 +23,10 @@ declare global {
 	}
 }
 
+declare module "svelte/elements" {
+	interface SvelteHTMLElements {
+		"supporters-roll": { label: string; anonymous: string };
+	}
+}
+
 export {};
