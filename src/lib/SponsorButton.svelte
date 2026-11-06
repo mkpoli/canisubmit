@@ -1,26 +1,65 @@
 <script lang="ts">
+import { tick } from "svelte";
 import * as m from "$lib/paraglide/messages";
+import { getLocale } from "$lib/paraglide/runtime";
 
 // The header's Sponsor pill, led by the author's face, and the dialog it opens: her portrait,
-// what a tip pays for, then three steps that end at the Ko-fi button.
+// what a tip pays for, then three steps that end at the Ko-fi and OFUSE buttons and the roll of
+// recent supporters. The contents render, and the roll's script loads, when the dialog first
+// opens, so a page view asks the supporters service for nothing.
 let dialog = $state<HTMLDialogElement>();
+let open = $state(false);
+let rollLoaded = false;
+let pressedOutside = false;
 
-// A click on the backdrop closes the dialog; one on its own scrollbar also targets the dialog,
-// so only a click outside its box counts.
+async function show() {
+	open = true;
+	await tick();
+	dialog?.showModal();
+	if (rollLoaded) return;
+	rollLoaded = true;
+	const script = document.createElement("script");
+	script.type = "module";
+	script.src = "https://supporters.mkpo.li/roll.js";
+	document.head.appendChild(script);
+}
+
+// Whether a press lands on the backdrop. A drag that leaves the box, or the box's own scrollbar,
+// also targets the dialog, so the test is by position.
 function outside(event: MouseEvent) {
-	if (!dialog || event.target !== dialog) return;
+	if (!dialog || event.target !== dialog) return false;
 	const box = dialog.getBoundingClientRect();
 	const { clientX: x, clientY: y } = event;
-	if (x < box.left || x > box.right || y < box.top || y > box.bottom)
-		dialog.close();
+	return x < box.left || x > box.right || y < box.top || y > box.bottom;
 }
 
 const heart =
 	"M12 21s-8.5-5.1-8.5-11.3A4.7 4.7 0 0 1 12 6.9a4.7 4.7 0 0 1 8.5 2.8C20.5 15.9 12 21 12 21Z";
+const ofuseFirst = $derived(getLocale() === "ja");
 const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 </script>
 
-<button type="button" class="sponsor" aria-label={m.sponsor_label()} aria-haspopup="dialog" onclick={() => dialog?.showModal()}>
+{#snippet arrow()}
+	<svg class="arrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+{/snippet}
+
+{#snippet kofi()}
+	<a class="tip kofi" href="https://ko-fi.com/mkpoli" target="_blank" rel="noreferrer noopener">
+		<img class="mark" src="/brand/kofi-symbol.svg" alt="" width="34" height="27" />
+		<span class="copy"><strong>Ko-fi</strong><small>{m.sponsor_kofi()}</small></span>
+		{@render arrow()}
+	</a>
+{/snippet}
+
+{#snippet ofuse()}
+	<a class="tip ofuse" href="https://ofuse.me/mkpoli" target="_blank" rel="noreferrer noopener">
+		<img class="mark" src="/brand/ofuse-icon.svg" alt="" width="26" height="28" />
+		<span class="copy"><strong>OFUSE</strong><small>{m.sponsor_ofuse()}</small></span>
+		{@render arrow()}
+	</a>
+{/snippet}
+
+<button type="button" class="sponsor" aria-label={m.sponsor_label()} aria-haspopup="dialog" onclick={show}>
 	<span class="face" aria-hidden="true">
 		<img src="/sponsor-face.webp" alt="" width="26" height="26" decoding="async" />
 		<svg class="face-heart" viewBox="0 0 24 24"><path d={heart} /></svg>
@@ -28,7 +67,13 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 	<span class="label">{m.sponsor_label()}</span>
 </button>
 
-<dialog class="sponsor-dialog" bind:this={dialog} aria-labelledby="sponsor-title" onclick={outside}>
+<dialog class="sponsor-dialog" bind:this={dialog} aria-labelledby="sponsor-title"
+	onclose={() => (open = false)}
+	onpointerdown={(event) => (pressedOutside = outside(event))}
+	onclick={(event) => {
+		if (pressedOutside && outside(event)) dialog?.close();
+	}}>
+	{#if open}
 	<header>
 		<h2 id="sponsor-title">{m.sponsor_label()}</h2>
 		<button class="dismiss" type="button" aria-label={m.sponsor_close()} onclick={() => dialog?.close()}>
@@ -54,17 +99,17 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 				{#each steps as step}<li>{step()}</li>{/each}
 			</ol>
 		</section>
-		<a class="kofi" href="https://ko-fi.com/mkpoli" target="_blank" rel="noreferrer noopener">
-			<img class="mark" src="/brand/kofi-symbol.svg" alt="" width="34" height="27" />
-			<span class="copy"><strong>Ko-fi</strong><small>{m.sponsor_kofi()}</small></span>
-			<svg class="arrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
-		</a>
+		<div class="tips">
+			{#if ofuseFirst}{@render ofuse()}{@render kofi()}{:else}{@render kofi()}{@render ofuse()}{/if}
+		</div>
 		<a class="company" href="mailto:mkpoli@mkpo.li?subject=Sponsorship%20on%20canisubmit.mkpo.li">
 			<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M3.5 6.5h17v11h-17zM3.5 7l8.5 6.5L20.5 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg>
 			<span class="copy"><strong>{m.sponsor_company()}</strong><small>{m.sponsor_company_hint()}</small></span>
 		</a>
+		<supporters-roll label={m.sponsor_supporters()} anonymous={m.sponsor_anonymous()}></supporters-roll>
 		<p class="thanks">{m.sponsor_thanks()}</p>
 	</div>
+	{/if}
 </dialog>
 
 <style>
@@ -98,8 +143,8 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 
 	.sponsor:focus-visible,
 	.dismiss:focus-visible,
-	.kofi:focus-visible,
-	.company:focus-visible {
+	.company:focus-visible,
+	.tip:focus-visible {
 		outline: 2px solid #6366f1;
 		outline-offset: 2px;
 	}
@@ -346,18 +391,36 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 		transform: translateY(-1px);
 	}
 
-	.kofi {
+	.tips {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.tip {
 		display: flex;
 		align-items: center;
 		gap: 12px;
 		padding-block: 12px;
 		padding-inline: 12px 18px;
 		border-radius: 999px;
-		border: 1px solid #202020;
-		background: #202020;
 		color: #fff;
 		text-decoration: none;
-		box-shadow: 0 6px 16px rgb(32 32 32 / 0.28);
+		box-shadow: 0 6px 16px var(--tip-glow);
+	}
+
+	.kofi {
+		--tip-glow: rgb(32 32 32 / 0.28);
+		--tip-glow-hover: rgb(32 32 32 / 0.38);
+		border: 1px solid #202020;
+		background: #202020;
+	}
+
+	.ofuse {
+		--tip-glow: rgb(38 125 160 / 0.3);
+		--tip-glow-hover: rgb(38 125 160 / 0.42);
+		border: 1px solid #267da0;
+		background: #267da0;
 	}
 
 	.mark {
@@ -394,7 +457,7 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 		line-height: 1.4;
 	}
 
-	.kofi .copy strong {
+	.tip .copy strong {
 		font-size: 1rem;
 	}
 
@@ -421,6 +484,11 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 	.company .copy strong {
 		font-size: 0.85rem;
 		color: #111827;
+	}
+
+	supporters-roll {
+		--sp-text: #111827;
+		--sp-muted: #6b7280;
 	}
 
 	.thanks {
@@ -468,15 +536,15 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 			animation: arrive 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
 		}
 
-		.kofi {
+		.tip {
 			transition:
 				transform 180ms ease,
 				box-shadow 180ms ease;
 		}
 
-		.kofi:hover {
+		.tip:hover {
 			transform: translateY(-1px);
-			box-shadow: 0 8px 22px rgb(32 32 32 / 0.38);
+			box-shadow: 0 8px 22px var(--tip-glow-hover);
 		}
 	}
 
