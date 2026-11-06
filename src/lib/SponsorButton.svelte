@@ -1,5 +1,6 @@
 <script lang="ts">
 import * as m from "$lib/paraglide/messages";
+import { getLocale } from "$lib/paraglide/runtime";
 
 // The header's Sponsor pill, led by the author's face, and the dialog it opens: her portrait,
 // what a tip pays for, then three steps that end at the Ko-fi button.
@@ -17,8 +18,29 @@ function outside(event: MouseEvent) {
 
 const heart =
 	"M12 21s-8.5-5.1-8.5-11.3A4.7 4.7 0 0 1 12 6.9a4.7 4.7 0 0 1 8.5 2.8C20.5 15.9 12 21 12 21Z";
+const ofuseFirst = $derived(getLocale() === "ja");
 const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 </script>
+
+{#snippet arrow()}
+	<svg class="arrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
+{/snippet}
+
+{#snippet kofi()}
+	<a class="tip kofi" href="https://ko-fi.com/mkpoli" target="_blank" rel="noreferrer noopener">
+		<img class="mark" src="/brand/kofi-symbol.svg" alt="" width="34" height="27" />
+		<span class="copy"><strong>Ko-fi</strong><small>{m.sponsor_kofi()}</small></span>
+		{@render arrow()}
+	</a>
+{/snippet}
+
+{#snippet ofuse()}
+	<a class="tip ofuse" href="https://ofuse.me/mkpoli" target="_blank" rel="noreferrer noopener">
+		<img class="mark" src="/brand/ofuse-icon.svg" alt="" width="26" height="28" />
+		<span class="copy"><strong>OFUSE</strong><small>{m.sponsor_ofuse()}</small></span>
+		{@render arrow()}
+	</a>
+{/snippet}
 
 <button type="button" class="sponsor" aria-label={m.sponsor_label()} aria-haspopup="dialog" onclick={() => dialog?.showModal()}>
 	<span class="face" aria-hidden="true">
@@ -54,11 +76,9 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 				{#each steps as step}<li>{step()}</li>{/each}
 			</ol>
 		</section>
-		<a class="kofi" href="https://ko-fi.com/mkpoli" target="_blank" rel="noreferrer noopener">
-			<img class="mark" src="/brand/kofi-symbol.svg" alt="" width="34" height="27" />
-			<span class="copy"><strong>Ko-fi</strong><small>{m.sponsor_kofi()}</small></span>
-			<svg class="arrow" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" /></svg>
-		</a>
+		<div class="tips">
+			{#if ofuseFirst}{@render ofuse()}{@render kofi()}{:else}{@render kofi()}{@render ofuse()}{/if}
+		</div>
 		<a class="company" href="mailto:mkpoli@mkpo.li?subject=Sponsorship%20on%20canisubmit.mkpo.li">
 			<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M3.5 6.5h17v11h-17zM3.5 7l8.5 6.5L20.5 7" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg>
 			<span class="copy"><strong>{m.sponsor_company()}</strong><small>{m.sponsor_company_hint()}</small></span>
@@ -98,8 +118,8 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 
 	.sponsor:focus-visible,
 	.dismiss:focus-visible,
-	.kofi:focus-visible,
-	.company:focus-visible {
+	.company:focus-visible,
+	.tip:focus-visible {
 		outline: 2px solid #6366f1;
 		outline-offset: 2px;
 	}
@@ -346,18 +366,36 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 		transform: translateY(-1px);
 	}
 
-	.kofi {
+	.tips {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
+	.tip {
 		display: flex;
 		align-items: center;
 		gap: 12px;
 		padding-block: 12px;
 		padding-inline: 12px 18px;
 		border-radius: 999px;
-		border: 1px solid #202020;
-		background: #202020;
 		color: #fff;
 		text-decoration: none;
-		box-shadow: 0 6px 16px rgb(32 32 32 / 0.28);
+		box-shadow: 0 6px 16px var(--tip-glow);
+	}
+
+	.kofi {
+		--tip-glow: rgb(32 32 32 / 0.28);
+		--tip-glow-hover: rgb(32 32 32 / 0.38);
+		border: 1px solid #202020;
+		background: #202020;
+	}
+
+	.ofuse {
+		--tip-glow: rgb(38 125 160 / 0.3);
+		--tip-glow-hover: rgb(38 125 160 / 0.42);
+		border: 1px solid #267da0;
+		background: #267da0;
 	}
 
 	.mark {
@@ -394,7 +432,7 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 		line-height: 1.4;
 	}
 
-	.kofi .copy strong {
+	.tip .copy strong {
 		font-size: 1rem;
 	}
 
@@ -468,15 +506,15 @@ const steps = [m.sponsor_step_1, m.sponsor_step_2, m.sponsor_step_3];
 			animation: arrive 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
 		}
 
-		.kofi {
+		.tip {
 			transition:
 				transform 180ms ease,
 				box-shadow 180ms ease;
 		}
 
-		.kofi:hover {
+		.tip:hover {
 			transform: translateY(-1px);
-			box-shadow: 0 8px 22px rgb(32 32 32 / 0.38);
+			box-shadow: 0 8px 22px var(--tip-glow-hover);
 		}
 	}
 
